@@ -1,7 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Brain, AlertTriangle, TrendingUp, Clock, ArrowRight, Lightbulb, Target } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Brain, AlertTriangle, TrendingUp, Lightbulb, Target, ChevronRight, Shield } from "lucide-react";
+import { motion } from "framer-motion";
 
 const insights = [
   {
@@ -65,92 +67,86 @@ export function AIInsightCards() {
   const getInsightColor = (type: string) => {
     switch (type) {
       case "warning":
-        return "text-warning bg-warning/10 border-warning/20";
+        return "text-warning bg-warning/10";
       case "opportunity":
-        return "text-success bg-success/10 border-success/20";
+        return "text-success bg-success/10";
       case "insight":
-        return "text-primary bg-primary/10 border-primary/20";
+        return "text-primary bg-primary/10";
       case "strategy":
-        return "text-accent bg-accent/10 border-accent/20";
+        return "text-accent bg-accent/10";
       default:
-        return "text-muted-foreground";
+        return "text-muted-foreground bg-muted/10";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case "high":
-        return "bg-destructive text-destructive-foreground";
+        return "bg-destructive/20 text-destructive border-destructive/30";
       case "medium":
-        return "bg-warning text-warning-foreground";
+        return "bg-warning/20 text-warning border-warning/30";
       case "low":
-        return "bg-success text-success-foreground";
+        return "bg-success/20 text-success border-success/30";
       default:
-        return "bg-muted text-muted-foreground";
+        return "bg-muted/20 text-muted-foreground border-muted/30";
     }
   };
 
   return (
-    <Card className="glass-card border-white/10">
-      <CardHeader className="pb-3 md:pb-4">
-        <CardTitle className="flex flex-col sm:flex-row sm:items-center gap-2 text-foreground text-base md:text-lg">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 md:p-2 rounded-lg gradient-primary glow-primary">
-              <Brain size={16} className="text-white md:w-[18px] md:h-[18px]" />
-            </div>
-            AI Insights & Recommendations
-          </div>
-          <div className="sm:ml-auto">
-            <Badge variant="outline" className="border-primary/20 text-primary text-xs">
-              <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full mr-1 md:mr-2 animate-pulse"></div>
-              Active
-            </Badge>
-          </div>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-          {insights.map((insight) => {
-            const IconComponent = getInsightIcon(insight.type);
+    <Card className="glass-card border-primary/20 p-2.5 md:p-3 h-full flex flex-col overflow-hidden">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-xs md:text-sm font-bold text-foreground flex items-center gap-1.5">
+          <Brain className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+          AI Insights
+        </h3>
+        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 text-[10px] h-6 px-1.5">
+          View More
+          <ChevronRight size={10} className="ml-0.5" />
+        </Button>
+      </div>
+
+      <ScrollArea className="flex-1 -mr-1.5 pr-1.5">
+        <div className="space-y-1.5">
+          {insights.slice(0, 3).map((insight, index) => {
+            const Icon = getInsightIcon(insight.type);
+            const colorClass = getInsightColor(insight.type);
+            const priorityColor = getPriorityColor(insight.priority);
+            
             return (
-              <div key={insight.id} className="glass-card p-3 md:p-4 rounded-lg hover:bg-white/10 transition-all duration-200">
-                <div className="flex items-start justify-between mb-2 md:mb-3">
-                  <div className="flex items-center gap-1.5 md:gap-2">
-                    <div className={`p-1 md:p-1.5 rounded-md ${getInsightColor(insight.type)}`}>
-                      <IconComponent size={12} className="md:w-[14px] md:h-[14px]" />
+              <motion.div
+                key={insight.id}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="glass-card p-2 rounded-lg border border-primary/10 hover:border-primary/30 transition-all"
+              >
+                <div className="flex items-start gap-1.5 mb-1">
+                  <div className={`${colorClass} p-1 rounded-lg shrink-0`}>
+                    <Icon size={12} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1.5 mb-0.5">
+                      <Badge variant="outline" className={`${priorityColor} text-[8px] font-bold px-1 py-0 h-4 uppercase`}>
+                        {insight.priority}
+                      </Badge>
+                      <span className="text-[9px] text-muted-foreground shrink-0">
+                        {insight.confidence}%
+                      </span>
                     </div>
-                    <Badge 
-                      variant="outline" 
-                      className={`text-xs capitalize ${getPriorityColor(insight.priority)}`}
-                    >
-                      {insight.priority}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Clock size={8} className="md:w-[10px] md:h-[10px]" />
-                    {insight.timeAgo}
+                    <h4 className="text-[10px] md:text-xs font-bold text-foreground mb-0.5 line-clamp-1">
+                      {insight.title}
+                    </h4>
+                    <p className="text-[9px] md:text-[10px] text-muted-foreground leading-relaxed line-clamp-2">
+                      {insight.description}
+                    </p>
                   </div>
                 </div>
-                
-                <h4 className="font-semibold text-foreground mb-1 md:mb-2 text-sm md:text-base">{insight.title}</h4>
-                <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3 leading-relaxed">
-                  {insight.description}
-                </p>
-                
-                <div className="flex items-center justify-between">
-                  <div className="text-xs text-muted-foreground">
-                    Confidence: <span className="text-primary font-medium">{insight.confidence}%</span>
-                  </div>
-                  <Button size="sm" variant="outline" className="text-xs h-7 md:h-8">
-                    {insight.action}
-                    <ArrowRight size={10} className="ml-1 md:w-3 md:h-3" />
-                  </Button>
-                </div>
-              </div>
+                <div className="text-[9px] text-muted-foreground pl-6">{insight.timeAgo}</div>
+              </motion.div>
             );
           })}
         </div>
-      </CardContent>
+      </ScrollArea>
     </Card>
   );
 }
