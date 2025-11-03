@@ -27,11 +27,7 @@ const HeroSection = () => {
           className="h-12 w-auto rounded-full"
           />
            {/* <span className="text-sm font-medium">Powered by ICP</span> */}
-          <img
-          src={ICPLogo}
-          alt="ICP Logo"
-          className="h-12 w-auto rounded-full"
-          />
+        
           </div>
           
           {/* Main Title */}
