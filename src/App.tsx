@@ -25,7 +25,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           {/* 👇 NEW LANDING PAGE */}
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<Dashboard />} />
           
           {/* 🔄 MOVED DASHBOARD TO ITS OWN ROUTE */}
           <Route path="/dashboard" element={<Dashboard />} />
