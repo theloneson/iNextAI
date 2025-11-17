@@ -1,8 +1,27 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Percent, Plus, BarChart3 } from "lucide-react";
+import { Shield, Percent, Plus, BarChart3, Lock } from "lucide-react";
 
-export function PerformanceMetrics() {
+interface PerformanceMetricsProps {
+  isWalletConnected?: boolean;
+}
+
+export function PerformanceMetrics({ isWalletConnected = false }: PerformanceMetricsProps) {
+  if (!isWalletConnected) {
+    return (
+      <Card className="glass-card border-primary/20 p-2 md:p-2.5 h-full flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <Lock className="w-6 h-6 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-foreground mb-1">PERFORMANCE Overview</h3>
+            <p className="text-xs text-muted-foreground">Connect your wallet to view metrics</p>
+          </div>
+        </div>
+      </Card>
+    );
+  }
   // Donut chart data
   const data = {
     profit: 60,
@@ -15,60 +34,60 @@ export function PerformanceMetrics() {
   const lossAngle = (data.loss / total) * 360;
   const breakEvenAngle = (data.breakEven / total) * 360;
 
-  const radius = 60;
-  const strokeWidth = 14;
+  const radius = 40;
+  const strokeWidth = 10;
   const normalizedRadius = radius - strokeWidth * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
 
   return (
-    <Card className="glass-card border-primary/20 p-3 md:p-4 h-full flex flex-col overflow-hidden">
+    <Card className="glass-card border-primary/20 p-1.5 md:p-2 h-full flex flex-col overflow-hidden">
       {/* Header Section */}
-      <div className="mb-2 md:mb-3">
-        <div className="flex items-center justify-between mb-1.5">
-          <h3 className="text-xs md:text-sm font-bold text-foreground flex items-center gap-1.5">
-            <Shield className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+      <div className="mb-1.5 md:mb-2">
+        <div className="flex items-center justify-between mb-1">
+          <h3 className="text-[10px] md:text-xs font-bold text-foreground flex items-center gap-1">
+            <Shield className="w-2.5 h-2.5 md:w-3 md:h-3 text-primary" />
             Performance
           </h3>
         </div>
-        <div className="flex items-baseline gap-2">
-          <div className="text-xl md:text-2xl font-bold text-success">+343.6%</div>
-          <Badge variant="outline" className="text-success border-success/30 text-[9px] px-1.5 py-0">
+        <div className="flex items-baseline gap-1.5">
+          <div className="text-sm md:text-base font-bold text-success">+343.6%</div>
+          <Badge variant="outline" className="text-success border-success/30 text-[8px] px-1 py-0">
             Total PNL
           </Badge>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-1.5 md:gap-2 mb-2 md:mb-3">
-        <div className="glass-card p-1.5 md:p-2 rounded-lg border border-primary/10">
-          <div className="text-[9px] md:text-[10px] text-muted-foreground mb-0.5">Best Trade</div>
-          <div className="text-xs md:text-sm font-bold text-success">+86.6%</div>
+      <div className="grid grid-cols-2 gap-0.5 md:gap-1 mb-1.5 md:mb-2">
+        <div className="glass-card p-0.5 md:p-1 rounded-lg border border-primary/10">
+          <div className="text-[8px] md:text-[9px] text-muted-foreground mb-0.5">Best Trade</div>
+          <div className="text-[10px] md:text-xs font-bold text-success">+86.6%</div>
         </div>
-        <div className="glass-card p-1.5 md:p-2 rounded-lg border border-primary/10">
-          <div className="text-[9px] md:text-[10px] text-muted-foreground mb-0.5">Worst Trade</div>
-          <div className="text-xs md:text-sm font-bold text-destructive">-26.6%</div>
+        <div className="glass-card p-0.5 md:p-1 rounded-lg border border-primary/10">
+          <div className="text-[8px] md:text-[9px] text-muted-foreground mb-0.5">Worst Trade</div>
+          <div className="text-[10px] md:text-xs font-bold text-destructive">-26.6%</div>
         </div>
-        <div className="glass-card p-1.5 md:p-2 rounded-lg border border-primary/10">
-          <div className="text-[9px] md:text-[10px] text-muted-foreground mb-0.5">Avg Trade</div>
-          <div className="text-xs md:text-sm font-bold text-primary">+26.6%</div>
+        <div className="glass-card p-0.5 md:p-1 rounded-lg border border-primary/10">
+          <div className="text-[8px] md:text-[9px] text-muted-foreground mb-0.5">Avg Trade</div>
+          <div className="text-[10px] md:text-xs font-bold text-primary">+26.6%</div>
         </div>
-        <div className="glass-card p-1.5 md:p-2 rounded-lg border border-primary/10">
-          <div className="text-[9px] md:text-[10px] text-muted-foreground mb-0.5">Win Rate</div>
-          <div className="text-xs md:text-sm font-bold text-success">56.6%</div>
+        <div className="glass-card p-0.5 md:p-1 rounded-lg border border-primary/10">
+          <div className="text-[8px] md:text-[9px] text-muted-foreground mb-0.5">Win Rate</div>
+          <div className="text-[10px] md:text-xs font-bold text-success">56.6%</div>
         </div>
-        <div className="glass-card p-1.5 md:p-2 rounded-lg border border-primary/10">
-          <div className="text-[9px] md:text-[10px] text-muted-foreground mb-0.5">Degen Score</div>
-          <div className="text-xs md:text-sm font-bold text-primary">71</div>
+        <div className="glass-card p-0.5 md:p-1 rounded-lg border border-primary/10">
+          <div className="text-[8px] md:text-[9px] text-muted-foreground mb-0.5">Degen Score</div>
+          <div className="text-[10px] md:text-xs font-bold text-primary">71</div>
         </div>
-        <div className="glass-card p-1.5 md:p-2 rounded-lg border border-primary/10">
-          <div className="text-[9px] md:text-[10px] text-muted-foreground mb-0.5">Trades</div>
-          <div className="text-xs md:text-sm font-bold text-foreground">20</div>
+        <div className="glass-card p-0.5 md:p-1 rounded-lg border border-primary/10">
+          <div className="text-[8px] md:text-[9px] text-muted-foreground mb-0.5">Trades</div>
+          <div className="text-[10px] md:text-xs font-bold text-foreground">20</div>
         </div>
       </div>
 
       {/* Donut Chart */}
-      <div className="flex flex-col items-center justify-center flex-1 min-h-0">
-        <svg width={radius * 2} height={radius * 2} className="w-20 h-20 md:w-24 md:h-24">
+      <div className="flex flex-col items-center justify-center flex-1 min-h-0 overflow-auto">
+        <svg width={radius * 2} height={radius * 2} className="w-10 h-10 md:w-12 md:h-12">
           <g transform={`translate(${radius}, ${radius}) rotate(-90)`}>
             {/* Profit segment */}
             <circle
