@@ -60,11 +60,11 @@ const MarketPage = () => {
       id: "polygon",
       symbol: "MATIC",
       name: "Polygon",
-      price: 0.823,
+      price: 0.1525,
       change24h: -2.87,
       volume: "290M",
       marketCap: "7.8B",
-      sparkline: [0.85, 0.84, 0.83, 0.82, 0.825, 0.823],
+      sparkline: [0.15, 0.14, 0.13, 0.12, 0.125, 0.1525],
       isFavorite: false
     },
     {
