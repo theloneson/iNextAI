@@ -11,11 +11,32 @@ import {
   CheckCircle,
   Activity,
   ChevronRight,
-  DollarSign
+  DollarSign,
+  Lock
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-export const RecentActivities = () => {
+interface RecentActivitiesProps {
+  isWalletConnected?: boolean;
+}
+
+export const RecentActivities = ({ isWalletConnected = false }: RecentActivitiesProps) => {
+  if (!isWalletConnected) {
+    return (
+      <Card className="glass-card border-primary/20 p-6 md:p-8 h-full flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+            <Lock className="w-10 h-10 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-foreground mb-2">Recent Activities</h3>
+            <p className="text-sm text-muted-foreground">Connect your wallet to view activities</p>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+  
   const activities = [
     {
       id: 1,
@@ -114,20 +135,20 @@ export const RecentActivities = () => {
   };
 
   return (
-    <Card className="glass-card border-primary/20 p-2.5 md:p-3 h-full flex flex-col overflow-hidden">
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-xs md:text-sm font-bold text-foreground flex items-center gap-1.5">
-          <Target className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+    <Card className="glass-card border-primary/20 p-2 md:p-2.5 h-full flex flex-col overflow-hidden">
+      <div className="flex items-center justify-between mb-1.5">
+        <h3 className="text-[10px] md:text-xs font-bold text-foreground flex items-center gap-1">
+          <Target className="w-2.5 h-2.5 md:w-3 md:h-3 text-primary" />
           Recent Activities
         </h3>
-        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 text-[10px] h-6 px-1.5">
+        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 text-[9px] h-5 px-1">
           View More
-          <ChevronRight size={10} className="ml-0.5" />
+          <ChevronRight size={8} className="ml-0.5" />
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 -mr-1.5 pr-1.5">
-        <div className="space-y-1.5">
+      <ScrollArea className="flex-1 -mr-1 pr-1">
+        <div className="space-y-1">
           {activities.slice(0, 4).map((activity, index) => {
             const Icon = getIcon(activity.type);
             const colors = getColorClasses(activity.color);
@@ -138,20 +159,20 @@ export const RecentActivities = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="glass-card p-2 rounded-lg border border-primary/10 hover:border-primary/30 transition-all"
+                className="glass-card p-1.5 rounded-lg border border-primary/10 hover:border-primary/30 transition-all"
               >
-                <div className="flex items-start gap-1.5">
-                  <div className={`${colors} p-1 rounded-lg shrink-0`}>
-                    <Icon size={12} />
+                <div className="flex items-start gap-1">
+                  <div className={`${colors} p-0.5 rounded-lg shrink-0`}>
+                    <Icon size={10} />
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-1.5 mb-0.5">
-                      <h4 className="text-[10px] md:text-xs font-semibold text-foreground truncate">
+                    <div className="flex items-start justify-between gap-1 mb-0.5">
+                      <h4 className="text-[9px] md:text-[10px] font-semibold text-foreground truncate">
                         {activity.title}
                       </h4>
                       {activity.value && (
-                        <span className={`text-[10px] font-bold shrink-0 ${
+                        <span className={`text-[9px] font-bold shrink-0 ${
                           activity.value.startsWith('+') ? 'text-success' : 
                           activity.value.startsWith('-') ? 'text-destructive' : 
                           'text-foreground'
@@ -160,10 +181,10 @@ export const RecentActivities = () => {
                         </span>
                       )}
                     </div>
-                    <p className="text-[9px] md:text-[10px] text-muted-foreground line-clamp-1 mb-0.5">
+                    <p className="text-[8px] md:text-[9px] text-muted-foreground line-clamp-1 mb-0.5">
                       {activity.description}
                     </p>
-                    <span className="text-[9px] text-muted-foreground">
+                    <span className="text-[8px] text-muted-foreground">
                       {activity.time}
                     </span>
                   </div>

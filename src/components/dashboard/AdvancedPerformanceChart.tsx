@@ -1,12 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { TrendingUp, TrendingDown, Lock } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { useState } from "react";
-
-interface AdvancedPerformanceChartProps {
-  isWalletConnected?: boolean;
-}
 
 const tradeData = [
   { 
@@ -106,11 +102,11 @@ const CustomDot = (props: any) => {
       <circle 
         cx={cx} 
         cy={cy} 
-        r={7} 
+        r={10} 
         fill={fill}
         opacity={0.15}
         style={{ 
-          filter: `blur(3px)`,
+          filter: `blur(4px)`,
           cursor: 'pointer'
         }}
       />
@@ -118,10 +114,10 @@ const CustomDot = (props: any) => {
       <circle 
         cx={cx} 
         cy={cy} 
-        r={5} 
+        r={7} 
         fill={fill}
         stroke="hsl(var(--background))"
-        strokeWidth={2}
+        strokeWidth={2.5}
         style={{ 
           filter: `drop-shadow(${glow})`,
           cursor: 'pointer'
@@ -133,7 +129,7 @@ const CustomDot = (props: any) => {
       <circle 
         cx={cx} 
         cy={cy} 
-        r={2.5} 
+        r={3.5} 
         fill={innerFill}
         opacity={0.9}
         style={{ cursor: 'pointer' }}
@@ -154,9 +150,9 @@ const CustomTooltip = ({ active, payload }: any) => {
   const isPositive = data.pnl >= 0;
   
   return (
-    <div className="glass-card-elevated border border-primary/30 rounded-lg p-2 min-w-[150px]">
-      <div className="space-y-0.5 text-[10px]">
-        <div className="flex justify-between items-center pb-1 border-b border-primary/20">
+    <div className="glass-card-elevated border border-primary/30 rounded-lg p-3 min-w-[200px]">
+      <div className="space-y-1 text-xs">
+        <div className="flex justify-between items-center pb-2 border-b border-primary/20">
           <span className="text-muted-foreground">TimeStamp:</span>
           <span className="text-primary font-medium">{data.timestamp}</span>
         </div>
@@ -165,14 +161,14 @@ const CustomTooltip = ({ active, payload }: any) => {
           <span className="text-foreground font-semibold">{data.trades}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Token:</span>
+          <span className="text-muted-foreground">Dominant Token:</span>
           <span className="text-primary font-semibold">{data.token}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Emotion:</span>
-          <span className="text-accent font-semibold">{data.emotion}</span>
+          <span className="text-muted-foreground">Avg Emotion:</span>
+          <span className="text-accent font-semibold">{data.emotion} ({data.emotionScore})</span>
         </div>
-        <div className="flex justify-between items-center pt-1 border-t border-primary/20">
+        <div className="flex justify-between items-center pt-2 border-t border-primary/20">
           <span className="text-muted-foreground">PnL:</span>
           <span className={`font-bold ${isPositive ? 'text-success' : 'text-destructive'}`}>
             {isPositive ? '+' : ''}{data.pnl < 0 ? data.pnl : `$${data.pnl}`}
@@ -183,25 +179,9 @@ const CustomTooltip = ({ active, payload }: any) => {
   );
 };
 
-export function AdvancedPerformanceChart({ isWalletConnected = false }: AdvancedPerformanceChartProps) {
+export function AdvancedPerformanceChart() {
   const [selectedPeriod, setSelectedPeriod] = useState('1D');
   const [hoveredPoint, setHoveredPoint] = useState<any>(null);
-
-  if (!isWalletConnected) {
-    return (
-      <Card className="glass-card border-primary/20 p-2 md:p-2.5 h-full flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center gap-3 text-center">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Lock className="w-6 h-6 text-primary" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-foreground mb-1">PERFORMANCE ANALYSIS</h3>
-            <p className="text-xs text-muted-foreground">Connect your wallet to view performance data</p>
-          </div>
-        </div>
-      </Card>
-    );
-  }
   
   const currentPnL = 343.50;
   const dailyChange = 12.5;
@@ -214,22 +194,22 @@ export function AdvancedPerformanceChart({ isWalletConnected = false }: Advanced
   ];
 
   return (
-    <Card className="glass-card border-primary/20 p-2 md:p-2.5 h-full flex flex-col overflow-hidden">
+    <Card className="glass-card-elevated border-primary/20 p-3 md:p-4 h-full flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between mb-1.5 md:mb-2">
-        <div className="flex items-center gap-1.5">
-          <div className="w-1 h-1 rounded-full bg-primary glow-primary" />
-          <h3 className="text-xs md:text-sm font-bold tracking-wide text-primary">PERFORMANCE ANALYSIS</h3>
+      <div className="flex items-center justify-between mb-2 md:mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-primary glow-primary" />
+          <h3 className="text-sm md:text-base font-bold tracking-wide text-primary">PERFORMANCE ANALYSIS</h3>
         </div>
         <div className="text-right">
-          <p className="text-sm md:text-base font-bold text-success glow-success">
+          <p className="text-lg md:text-xl font-bold text-success glow-success">
             {isPositive ? '+' : ''}{currentPnL} USDT
           </p>
-          <div className="flex items-center justify-end gap-0.5 text-[10px]">
+          <div className="flex items-center justify-end gap-1 text-xs">
             {isPositive ? (
-              <TrendingUp className="w-2.5 h-2.5 text-success" />
+              <TrendingUp className="w-3 h-3 text-success" />
             ) : (
-              <TrendingDown className="w-2.5 h-2.5 text-destructive" />
+              <TrendingDown className="w-3 h-3 text-destructive" />
             )}
             <span className={isPositive ? 'text-success' : 'text-destructive'}>
               {dailyChange}% today
@@ -240,17 +220,17 @@ export function AdvancedPerformanceChart({ isWalletConnected = false }: Advanced
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-0">
-        <div className="mb-1.5">
-          <div className="flex items-center justify-between mb-1">
-            <h4 className="text-[10px] md:text-xs font-medium text-foreground">PNL Over Time</h4>
-            <div className="flex gap-1">
+        <div className="mb-2">
+          <div className="flex items-center justify-between mb-1.5">
+            <h4 className="text-xs md:text-sm font-medium text-foreground">PNL Over Time</h4>
+            <div className="flex gap-1.5">
               {periods.map((period) => (
                 <Button
                   key={period.value}
                   onClick={() => setSelectedPeriod(period.value)}
                   variant="ghost"
                   size="sm"
-                  className={`text-[9px] md:text-[10px] px-1.5 py-0.5 h-5 rounded-lg transition-all ${
+                  className={`text-[10px] md:text-xs px-2 py-1 h-6 rounded-lg transition-all ${
                     selectedPeriod === period.value
                       ? 'gradient-primary text-white glow-primary'
                       : 'glass-card border border-primary/20 text-muted-foreground hover:text-primary hover:border-primary/40'
@@ -264,7 +244,7 @@ export function AdvancedPerformanceChart({ isWalletConnected = false }: Advanced
         </div>
         
         {/* Chart */}
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 h-[45vh]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={tradeData} margin={{ top: 5, right: 5, left: -10, bottom: 0 }}>
               <defs>
@@ -284,15 +264,15 @@ export function AdvancedPerformanceChart({ isWalletConnected = false }: Advanced
                 axisLine={false}
                 tickLine={false}
                 className="text-muted-foreground"
-                tick={{ fontSize: 8, fill: 'hsl(var(--muted-foreground))' }}
-                dy={6}
+                tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                dy={8}
               />
               <YAxis 
                 axisLine={false}
                 tickLine={false}
                 className="text-muted-foreground"
-                tick={{ fontSize: 8, fill: 'hsl(var(--muted-foreground))' }}
-                dx={-4}
+                tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                dx={-5}
               />
               <Tooltip 
                 content={<CustomTooltip />}
@@ -302,7 +282,7 @@ export function AdvancedPerformanceChart({ isWalletConnected = false }: Advanced
                 type="monotone" 
                 dataKey="pnl" 
                 stroke="hsl(210 100% 60%)" 
-                strokeWidth={1.5}
+                strokeWidth={2}
                 fill="url(#pnlGradient)" 
                 dot={(props) => <CustomDot {...props} onHover={setHoveredPoint} />}
                 activeDot={{ r: 0 }}
