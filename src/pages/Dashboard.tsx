@@ -33,29 +33,29 @@ const Index = () => {
       onConnectWallet={handleWalletConnect}
     >
       {/* Responsive Grid - Performance full width, Recent Activities + AI Insights below */}
-      <div className="w-full max-w-screen-2xl mx-auto h-[calc(100vh-140px)] overflow-hidden">
-        <div className="flex flex-col gap-2 md:gap-3 h-full">
+      <div className="w-full max-w-screen-2xl mx-auto h-full overflow-hidden">
+        <div className="flex flex-col gap-1 md:gap-1.5 h-full">
           
           {/* Top Row - Performance Chart + Metrics (Full Width) */}
-          <div className="h-[55%] grid grid-cols-1 lg:grid-cols-3 gap-2 md:gap-3 min-h-0">
+          <div className="h-[36%] grid grid-cols-1 lg:grid-cols-3 gap-1 md:gap-1.5 min-h-0">
             {/* Performance Chart - 2/3 width */}
-            <div className="lg:col-span-2 min-h-0">
-              <AdvancedPerformanceChart />
+            <div className="lg:col-span-2 h-full min-h-0">
+              <AdvancedPerformanceChart isWalletConnected={isWalletConnected} />
             </div>
             
             {/* Performance Metrics - 1/3 width */}
-            <div className="lg:col-span-1 min-h-0">
-              <PerformanceMetrics />
+            <div className="lg:col-span-1 h-full min-h-0">
+              <PerformanceMetrics isWalletConnected={isWalletConnected} />
             </div>
           </div>
 
           {/* Bottom Row - Recent Activities + AI Insights */}
-          <div className="h-[43%] grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-3 min-h-0">
-            <div className="min-h-0 overflow-hidden">
-              <RecentActivities />
+          <div className="h-[60%] grid grid-cols-1 lg:grid-cols-2 gap-1 md:gap-1.5 min-h-0">
+            <div className="h-full min-h-0 overflow-auto">
+              <RecentActivities isWalletConnected={isWalletConnected} />
             </div>
-            <div className="min-h-0 overflow-hidden">
-              <AIInsightCards />
+            <div className="h-full min-h-0 overflow-auto">
+              <AIInsightCards isWalletConnected={isWalletConnected} />
             </div>
           </div>
         </div>
