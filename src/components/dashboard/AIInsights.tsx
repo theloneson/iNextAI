@@ -1,95 +1,172 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Brain, AlertTriangle, CheckCircle, TrendingUp, ArrowRight } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Brain, AlertTriangle, TrendingUp, Lightbulb, Target, ChevronRight, Shield, Lock } from "lucide-react";
+import { motion } from "framer-motion";
 
-export function AIInsights() {
-  const insights = [
-    {
-      type: "warning",
-      title: "High Risk Pattern Detected",
-      description: "You've made 3 consecutive FOMO trades after losses. Consider taking a break.",
-      icon: AlertTriangle,
-      color: "text-orange-500",
-      bgColor: "bg-orange-500/10",
-    },
-    {
-      type: "success",
-      title: "Emotional Control Improving",
-      description: "Your revenge trading frequency has decreased by 40% this week.",
-      icon: CheckCircle,
-      color: "text-green-500",
-      bgColor: "bg-green-500/10",
-    },
-    {
-      type: "opportunity",
-      title: "Optimal Trading Window",
-      description: "Based on your patterns, you perform best between 10 AM - 2 PM EST.",
-      icon: TrendingUp,
-      color: "text-blue-500",
-      bgColor: "bg-blue-500/10",
-    },
-  ];
+const insights = [
+  {
+    id: 1,
+    type: "warning",
+    title: "FOMO Pattern Detected",
+    description: "You've made 3 quick trades after a loss. Consider taking a break to reset your emotional state.",
+    confidence: 92,
+    timeAgo: "2m ago",
+    action: "Take Break",
+    priority: "high"
+  },
+  {
+    id: 2,
+    type: "opportunity",
+    title: "Optimal Entry Window",
+    description: "BTC showing strong support at $42,000. Your historical win rate at this level is 78%.",
+    confidence: 85,
+    timeAgo: "5m ago",
+    action: "View Setup",
+    priority: "medium"
+  },
+  {
+    id: 3,
+    type: "insight",
+    title: "Emotional Correlation",
+    description: "Your best trades happen when emotional score is between 60-75. Current: 65.",
+    confidence: 89,
+    timeAgo: "8m ago",
+    action: "Learn More",
+    priority: "low"
+  },
+  {
+    id: 4,
+    type: "strategy",
+    title: "Risk Management Alert",
+    description: "Current position size exceeds your typical 2% rule. Consider reducing exposure.",
+    confidence: 94,
+    timeAgo: "12m ago",
+    action: "Adjust Size",
+    priority: "high"
+  }
+];
 
-  const recommendations = [
-    "Set position size limits based on recent emotional state",
-    "Take a 15-minute break after 2 consecutive losses",
-    "Focus on BTC/ETH pairs during high volatility periods",
-    "Avoid trading 1 hour after major news events",
-  ];
+interface AIInsightCardsProps {
+  isWalletConnected?: boolean;
+}
+
+export function AIInsightCards({ isWalletConnected = false }: AIInsightCardsProps) {
+  if (!isWalletConnected) {
+    return (
+      <Card className="glass-card border-primary/20 p-6 md:p-8 h-full flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+            <Lock className="w-10 h-10 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-foreground mb-2">AI Insights</h3>
+            <p className="text-sm text-muted-foreground">Connect your wallet to view insights</p>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+  
+  const getInsightIcon = (type: string) => {
+    switch (type) {
+      case "warning":
+        return AlertTriangle;
+      case "opportunity":
+        return TrendingUp;
+      case "insight":
+        return Lightbulb;
+      case "strategy":
+        return Target;
+      default:
+        return Brain;
+    }
+  };
+
+  const getInsightColor = (type: string) => {
+    switch (type) {
+      case "warning":
+        return "text-warning bg-warning/10";
+      case "opportunity":
+        return "text-success bg-success/10";
+      case "insight":
+        return "text-primary bg-primary/10";
+      case "strategy":
+        return "text-accent bg-accent/10";
+      default:
+        return "text-muted-foreground bg-muted/10";
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "high":
+        return "bg-destructive/20 text-destructive border-destructive/30";
+      case "medium":
+        return "bg-warning/20 text-warning border-warning/30";
+      case "low":
+        return "bg-success/20 text-success border-success/30";
+      default:
+        return "bg-muted/20 text-muted-foreground border-muted/30";
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      {/* AI Insights */}
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-              <Brain size={16} className="text-primary" />
-            </div>
-            AI Insights
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {insights.map((insight, index) => (
-            <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30">
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${insight.bgColor}`}>
-                <insight.icon size={16} className={insight.color} />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-medium text-foreground">{insight.title}</h4>
-                <p className="text-sm text-muted-foreground mt-1">{insight.description}</p>
-              </div>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+    <Card className="glass-card border-primary/20 p-2 md:p-2.5 h-full flex flex-col overflow-hidden">
+      <div className="flex items-center justify-between mb-1.5">
+        <h3 className="text-[10px] md:text-xs font-bold text-foreground flex items-center gap-1">
+          <Brain className="w-2.5 h-2.5 md:w-3 md:h-3 text-primary" />
+          AI Insights
+        </h3>
+        <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 text-[9px] h-5 px-1">
+          View More
+          <ChevronRight size={8} className="ml-0.5" />
+        </Button>
+      </div>
 
-      {/* Recommendations */}
-      <Card className="bg-card border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between text-foreground">
-            <span className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                <TrendingUp size={16} className="text-primary" />
-              </div>
-              Recommendations
-            </span>
-            <Button variant="ghost" size="sm" className="text-primary">
-              View All <ArrowRight size={14} />
-            </Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {recommendations.map((rec, index) => (
-              <div key={index} className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
-                <span className="text-sm text-muted-foreground">{rec}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+      <ScrollArea className="flex-1 -mr-1 pr-1">
+        <div className="space-y-1">
+          {insights.slice(0, 3).map((insight, index) => {
+            const Icon = getInsightIcon(insight.type);
+            const colorClass = getInsightColor(insight.type);
+            const priorityColor = getPriorityColor(insight.priority);
+            
+            return (
+              <motion.div
+                key={insight.id}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="glass-card p-1.5 rounded-lg border border-primary/10 hover:border-primary/30 transition-all"
+              >
+                <div className="flex items-start gap-1 mb-0.5">
+                  <div className={`${colorClass} p-0.5 rounded-lg shrink-0`}>
+                    <Icon size={10} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1 mb-0.5">
+                      <Badge variant="outline" className={`${priorityColor} text-[7px] font-bold px-0.5 py-0 h-3.5 uppercase`}>
+                        {insight.priority}
+                      </Badge>
+                      <span className="text-[8px] text-muted-foreground shrink-0">
+                        {insight.confidence}%
+                      </span>
+                    </div>
+                    <h4 className="text-[9px] md:text-[10px] font-bold text-foreground mb-0.5 line-clamp-1">
+                      {insight.title}
+                    </h4>
+                    <p className="text-[8px] md:text-[9px] text-muted-foreground leading-relaxed line-clamp-2">
+                      {insight.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-[8px] text-muted-foreground pl-5">{insight.timeAgo}</div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </ScrollArea>
+    </Card>
   );
 }
