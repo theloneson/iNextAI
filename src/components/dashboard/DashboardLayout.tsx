@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/inext.png"; // Import your logo
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -25,12 +26,19 @@ export function DashboardLayout({ children, isWalletConnected = false, onConnect
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top Navbar */}
       <header className="h-14 glass-card border-b border-primary/20 flex items-center justify-between px-6">
-        {/* Logo */}
+        {/* Logo - Replaced with your imported image */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 gradient-primary rounded-lg flex items-center justify-center glow-primary">
-            <span className="text-white font-bold text-sm">iN</span>
-          </div>
-          <span className="text-lg font-bold gradient-primary bg-clip-text text-transparent">iNext AI</span>
+          <button 
+            onClick={() => navigate("/")}
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
+            <img 
+              src={logo} // Use the imported logo
+              alt="Logo" 
+              className="w-8 h-8 object-contain"
+            />
+            {/* Removed the "iNext AI" text */}
+          </button>
         </div>
 
         {/* Navigation Links */}
