@@ -58,9 +58,9 @@ export function PerformanceMetrics({ isWalletConnected = false }: PerformanceMet
         </div>
       </div>
 
-      {/* Scrollable Content Area */}
-      <ScrollArea className="flex-1">
-        <div className="space-y-1.5 md:space-y-2">
+      {/* Scrollable Content Area - Hidden Scrollbar */}
+      <ScrollArea className="flex-1 [&>div>div]:!overflow-hidden [&>div>div]:!-mr-1">
+        <div className="space-y-1.5 md:space-y-2 pr-1">
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-0.5 md:gap-1">
             <div className="glass-card p-0.5 md:p-1 rounded-lg border border-primary/10">
