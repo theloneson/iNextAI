@@ -21,7 +21,6 @@ const Index = () => {
   const handleWalletConnected = () => {
     setIsWalletConnected(true);
     setShowWalletDialog(false);
-    // Show mood dialog after wallet connection
     setTimeout(() => {
       setShowMoodDialog(true);
     }, 500);
@@ -32,29 +31,30 @@ const Index = () => {
       isWalletConnected={isWalletConnected} 
       onConnectWallet={handleWalletConnect}
     >
-      {/* Responsive Grid - Performance full width, Recent Activities + AI Insights below */}
-      <div className="w-full max-w-screen-2xl mx-auto h-full overflow-hidden">
-        <div className="flex flex-col gap-1 md:gap-1.5 h-full">
+      {/* Single Screen Grid - Reduced height for some components */}
+      <div className="w-full h-[calc(100vh-4rem)]">
+        <div className="grid grid-cols-3 grid-rows-2 gap-4 h-full p-4">
           
-          {/* Top Row - Performance Chart + Metrics (Full Width) */}
-          <div className="h-[36%] grid grid-cols-1 lg:grid-cols-3 gap-1 md:gap-1.5 min-h-0">
-            {/* Performance Chart - 2/3 width */}
-            <div className="lg:col-span-2 h-full min-h-0">
-              <AdvancedPerformanceChart isWalletConnected={isWalletConnected} />
-            </div>
-            
-            {/* Performance Metrics - 1/3 width */}
-            <div className="lg:col-span-1 h-full min-h-0">
-              <PerformanceMetrics isWalletConnected={isWalletConnected} />
+          {/* Performance Chart - Top Left (2x1) - Full Height */}
+          <div className="col-span-2 row-span-1">
+            <AdvancedPerformanceChart isWalletConnected={isWalletConnected} />
+          </div>
+          
+          {/* Performance Metrics - Top Right (1x1) - Full Height */}
+          <div className="col-span-1 row-span-1">
+            <PerformanceMetrics isWalletConnected={isWalletConnected} />
+          </div>
+
+          {/* Recent Activities - Bottom Left (1x1) - Reduced Height */}
+          <div className="col-span-1 row-span-1">
+            <div className="h-64"> {/* Reduced from full height */}
+              <RecentActivities isWalletConnected={isWalletConnected} />
             </div>
           </div>
 
-          {/* Bottom Row - Recent Activities + AI Insights */}
-          <div className="h-[60%] grid grid-cols-1 lg:grid-cols-2 gap-1 md:gap-1.5 min-h-0">
-            <div className="h-full min-h-0 overflow-auto">
-              <RecentActivities isWalletConnected={isWalletConnected} />
-            </div>
-            <div className="h-full min-h-0 overflow-auto">
+          {/* AI Insights - Bottom Right (2x1) - Reduced Height */}
+          <div className="col-span-2 row-span-1">
+            <div className="h-64"> {/* Reduced from full height */}
               <AIInsightCards isWalletConnected={isWalletConnected} />
             </div>
           </div>
